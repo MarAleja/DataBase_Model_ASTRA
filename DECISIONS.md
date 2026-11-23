@@ -45,6 +45,7 @@ We also recognize that the seven notch filters remove portions of the EMG freque
 |---|---|---|---|
 |Logistic regression (6 features) | 86.8% | 9.3 percentage points | 71.2% |
 |Decision tree, depth 3 (6 features) | 87.7% | 8.0 percentage points | 73.9% |
+
 **Reason.** 
 ### Model Selection and Justification
 
