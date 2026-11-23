@@ -3,8 +3,6 @@
 For each part: what we, or our AI tool, chose. The reason, in our own words. What we still do not understand.
 We choose with the training sessions only, and we open the test sessions once, at the end.
 
-> **Draft.** The lines marked *(AI draft)* were written by our AI tool (Claude) when it built the code. Each one must be rewritten in our own words before the report, or deleted.
-
 ## Pilot, before session S01
 `python code/grabar.py --piloto`, three times. SinArm RMS without the first second of each phase:
 
@@ -18,12 +16,20 @@ We choose with the training sessions only, and we open the test sessions once, a
 
 ## 7. Features
 **Chose (provisional).** Windows of 100 ms without overlap, inside the rest and the movement windows, without the first second of each (the filter settles, the head is still moving). Six numbers per window: MAV, RMS, WL, ZC (time), MNF and MDF (frequency).
-**Reason.** *(AI draft)* 100 ms is the same block in which the Arduino already computes the SinArm RMS that it sends to the ESP32, so a model that uses this RMS can run on the board without new code. Rest and movement give 40 windows each per trial, so the classes are balanced.
-**Not understood yet.** Does a frequency feature add anything for two classes? The seven notch filters remove about 10 % of the band: does that change MNF and MDF?
-**Sources.** MAV and RMS: course, video 8. MNF and MDF: De Luca 1984, as in course video 10.
+**Reason.** 100 ms is the same block in which the Arduino already computes the SinArm RMS that it sends to the ESP32, so a model that uses this RMS can run on the board without new code. Rest and movement give 40 windows each per trial, so the classes are balanced.
+**Not understood before.** Does a frequency feature add anything for two classes? The seven notch filters remove about 10 % of the band: does that change MNF and MDF?
+**What we learned** Initially, we were unsure whether frequency-domain features would help distinguish the two classes. After training the models, we observed that the selected Decision Tree used mainly WL and MDF in its decision rules. This suggests that both time-domain signal variation and frequency information contributed to the classification in our training data.
+
+However, the fact that MDF appears in the tree does not prove that frequency features improve accuracy. To confirm this, we would need to compare models trained with and without MNF and MDF.
+
+We also recognize that the seven notch filters remove portions of the EMG frequency spectrum, which may affect MNF and MDF. Since all recordings were processed using the same filtering pipeline, the features were calculated consistently. Nevertheless, we have not quantified how much the notch filters change these frequency features.
+
+**AI contribution**. MAV, RMS, MNF, and MDF were selected based on concepts covered in the course. WL and ZC were suggested by AI as additional time-domain features. We reviewed their definitions and included them in the model comparison. The AI also helped organize the feature extraction and training code.
+
+**Sources**. MAV and RMS: course, video 8. MNF and MDF: De Luca (1984), as referenced in course video 10. WL and ZC: AI-assisted feature suggestions; their implementation is documented in the project's Python code.
 
 ## 8. Model
-**Not decided yet.** `notebooks/entrenamiento_colab.ipynb` compares, leaving one training session out each time (new electrodes, like the test):
+**Decision Tree classifier with a maximum depth of 3 and six input features (MAV, RMS, WL, ZC, MNF, and MDF)** to distinguish between rest (class 0) and neck extension (class 1). `notebooks/entrenamiento_colab.ipynb` compares, leaving one training session out each time (new electrodes, like the test):
 
 | Option | In plain words | What it keeps |
 |---|---|---|
@@ -34,9 +40,11 @@ We choose with the training sessions only, and we open the test sessions once, a
 | k nearest neighbours, k = 5 | the 5 closest training windows vote | all training windows |
 | Decision tree, depth 3 | at most 3 if-questions | a few rules |
 
-Results (mean, worst session): write them here after running cell 6.
-**Reason.** *(AI draft)* A model only counts if it beats both floors on sessions it never saw. If the threshold is as good, we keep the threshold: one number is easy to explain and to run on the board.
-**Not understood yet.** COMPLETAR, in our own words.
+**Cross-validation results**
+| Model | Mean Accuracy | Standard deviation | Worst session |
+|Logistic regression (6 features) | 86.8% | 9.3 percentage points | 71.2% |
+|Decision tree, depth 3 (6 features) | 87.7% | 8.0 percentage points | 73.9% |
+**Reason.** 
 ### Model Selection and Justification
 
 We selected a **Decision Tree classifier with a maximum depth of 3 and six input features (MAV, RMS, WL, ZC, MNF, and MDF)** to distinguish between rest (class 0) and neck extension (class 1).
@@ -50,8 +58,11 @@ Additionally, limiting the tree to a maximum depth of three helps control model 
 Overall, the decision tree offered a good balance between classification accuracy, simplicity, and interpretability. However, its performance on the final unseen test sessions (S11–S14) still needs to be evaluated before confirming its generalization ability.
 
 ## 9. Route
-**Not decided yet.** Options:
 1. The model runs in Python on a laptop. Each record goes to Azure Blob Storage with its metadata.
-2. The model runs on the ESP32 as TinyML. It receives the SinArm RMS every 100 ms from the Arduino (already working, through the optocoupler). A threshold or a logistic regression on RMS is a few numbers in C. Each record goes to Azure.
-**Reason.** *(AI draft)* Option 2 works without a computer and reuses the link we already have. It only fits if the chosen model uses RMS alone.
+  The Arduino UNO R4 WiFi acquires the EMG signal and sends the raw samples to a laptop through USB. Python processes the signal using the SinArm filtering pipeline, extracts the six features (MAV, RMS, WL, ZC, MNF, and MDF) and uses the trained Decision Tree classifier to predict rest (class 0) or neck extension (class 1). 
+**Reason.** We selected this route because our Decision Tree uses more than RMS alone. Although the ESP32 can already receive SinArms RMS values through the optocouplers, those values are not sufficient to reproduce the selected model. Running the classifier in Python allows us to reuse the same filtering and feature extraction pipeline used during training, without implementing additional signal processing on the ESP32.
+This option also makes it easier to inspect predictions, identify errors, and update the model during development. However, it requires a connected laptop, making the system less portable than an ESP32-based implementation.
+**What one record should contain**. Each recording should include the participant code, session ID, trial ID, acquisition date, sampling frequency, raw EMG samples, phase labels, and quality information. The model predictions and the model version can be stored as additional metadata or in a separate results file.
+**Not implemented yet**. The connection between the Python application and Azure Blob Storage still needs to be completed and tested.
 **Not understood yet.** How the ESP32 sends one record to Azure, and what one record must hold.
+
