@@ -10,7 +10,7 @@ We choose with the training sessions only, and we open the test sessions once, a
 |---|---|---|---|---|---|
 | 1 | 15.96 | 15.78| 16.05 | 0.99 | 1.01 |
 | 2 | 4.37 | 4.69 | 3.71 | 1.07| 0.85 |
-| 3 | | | | | |
+
 
 **What it decides.** If "up" is not clearly above "neutral", the movement or the site must change before we record 100 trials. "Down" is recorded only here: it tells us if this muscle could also separate up from down later (project Atlas). Looking down also loads the neck extensors, so the two may look alike on this muscle.
 
@@ -60,9 +60,13 @@ Overall, the decision tree offered a good balance between classification accurac
 ## 9. Route
 1. The model runs in Python on a laptop. Each record goes to Azure Blob Storage with its metadata.
   The Arduino UNO R4 WiFi acquires the EMG signal and sends the raw samples to a laptop through USB. Python processes the signal using the SinArm filtering pipeline, extracts the six features (MAV, RMS, WL, ZC, MNF, and MDF) and uses the trained Decision Tree classifier to predict rest (class 0) or neck extension (class 1). 
+
 **Reason.** We selected this route because our Decision Tree uses more than RMS alone. Although the ESP32 can already receive SinArms RMS values through the optocouplers, those values are not sufficient to reproduce the selected model. Running the classifier in Python allows us to reuse the same filtering and feature extraction pipeline used during training, without implementing additional signal processing on the ESP32.
 This option also makes it easier to inspect predictions, identify errors, and update the model during development. However, it requires a connected laptop, making the system less portable than an ESP32-based implementation.
+
 **What one record should contain**. Each recording should include the participant code, session ID, trial ID, acquisition date, sampling frequency, raw EMG samples, phase labels, and quality information. The model predictions and the model version can be stored as additional metadata or in a separate results file.
+
 **Not implemented yet**. The connection between the Python application and Azure Blob Storage still needs to be completed and tested.
+
 **Not understood yet.** How the ESP32 sends one record to Azure, and what one record must hold.
 
