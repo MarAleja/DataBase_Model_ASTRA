@@ -3,23 +3,24 @@
 Course: M6 Machine Learning and IoT apps. Report 1, the data stage.
 Project: tell "neck up" from "neutral neck" with one surface EMG channel on the left splenius capitis of one person, on sessions with new electrodes that the model never saw. Goal: more than 75 % right.
 
-> **Status: protocol and code ready, no recordings yet.** Lines marked *(fill in)* get their numbers after recording. `python code/check_quality.py` gives most of them.
+> **Status: protocol and code ready, 100 recordings made.**. `python code/check_quality.py` gives most of them.
 
 ## The team
 
 | Member code | GitHub user | In charge of | AI tool |
 |---|---|---|---|
 | M01 | @Aleja246 | COMPLETAR | COMPLETAR |
-| M02 | COMPLETAR | COMPLETAR | COMPLETAR |
+| M02 | @saraipino | COMPLETAR | COMPLETAR |
 | M03 | COMPLETAR | COMPLETAR | COMPLETAR |
+| M04 | COMPLETAR | COMPLETAR | COMPLETAR |
 
 Every member has at least one commit. We measure one person. In the data that person has the code P01.
 
 ## The six parts
 
 ### 1. Data acquisition
-Plan: 100 training recordings, one trial each, 10 sessions, 1 person. Electrodes COMPLETAR (type), COMPLETAR cm apart, on the left splenius capitis. Arduino UNO R4 WiFi, 14 bits, 1000 samples per second, measured on the board with `micros()`.
-Result *(fill in)*: N recordings, N trials, N sessions.
+Plan: 100 training recordings, one trial each, 10 sessions, 1 person. Disposable Ag/AgCl surface Electrode, 92 cm apart, on the left splenius capitis. Arduino UNO R4 WiFi, 14 bits, 1000 samples per second, measured on the board with `micros()`.
+Result: 104 recordings, 104 trials, 10 sessions. 
 **Evidence:** `data/raw/`, `data/metadata.csv`, `cue/cue-video.mp4`.
 
 ### 2. Task
@@ -39,13 +40,13 @@ One trial per file, 15 s. Tones, because the person cannot see the screen with t
 
 ### 4. Sessions
 Plan: 10 training sessions on at least 2 days, 10 accepted recordings each. New electrodes, placed again from zero, at the start of every session.
-Result *(fill in)*: sessions on N days.
+Result: sessions on 2 days.
 **Evidence:** the columns `session` and `date` of `data/metadata.csv`, one photo per session in `figures/`.
 
 ### 5. Cleaning
 Filters: DC removal (first order high-pass, 0.48 Hz) and seven notch filters at 60 Hz and its harmonics up to 420 Hz (Q = 20), the same chain as our Arduino sketch. Analog band-pass of the sensor: 40 to 450 Hz, so no digital band-pass. Type, order, limits and sources in `PROTOCOL.md`, section 9. The raw files are never changed.
 Rule, written before any score: reject a recording if a sample hits 0 or 16383, if more than 1 % of samples are missing, if its length or its sampling rate is more than 2 % off, or if the operator rejected it.
-Result *(fill in)*: N of N rejected.
+Result: 4 of 104 rejected.
 **Evidence:** `QUALITY-REPORT.md`, `code/check_quality.py`.
 
 ### 6. Fair split
