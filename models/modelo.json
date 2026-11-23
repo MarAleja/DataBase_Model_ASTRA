@@ -1,0 +1,21 @@
+{
+  "name": "decision tree, depth 3 (6 features)",
+  "features": [
+    "mav",
+    "rms",
+    "wl",
+    "zc",
+    "mnf",
+    "mdf"
+  ],
+  "classes": {
+    "0": "rest",
+    "1": "neck up"
+  },
+  "window_ms": 100,
+  "cv_accuracy_mean": 0.877,
+  "cv_accuracy_min": 0.7388,
+  "training_windows": 7996,
+  "trained_at": "2026-11-23T17:23:45",
+  "git_commit": ""
+}
