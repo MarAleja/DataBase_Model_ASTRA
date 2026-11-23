@@ -1,0 +1,61 @@
+{
+  "participant": "P01",
+  "task": "neck extension: raise the head to mark B and hold it (move) vs neutral neck looking at mark A (rest)",
+  "muscle": "splenius capitis",
+  "side": "left",
+  "posture": "seated, back against the chair, hands on the thighs, feet flat",
+
+  "rest_s": 5,
+  "warning_s": 1,
+  "move_s": 5,
+  "between_s": 4,
+  "recordings_per_session": 10,
+  "train_sessions": ["S01", "S02", "S03", "S04", "S05", "S06", "S07", "S08", "S09", "S10"],
+  "test_sessions": ["S11", "S12", "S13", "S14"],
+
+  "fs_hz": 1000,
+  "adc_bits": 14,
+  "vref_v": 5.0,
+  "serial_baud": 250000,
+  "firmware_expected": "adq-v2",
+
+  "sensor_model": "Own design, Nova, AD620AN base and 12 cascaded second-order filter stage sEMG",
+  "gain": "Theorical of 1000, measured of 620",
+  "sensor_analog_filter": "band-pass 40 to 450 Hz",
+  "electrode_type": "Disposable Ag/AgCl surface electrode",
+  "electrode_distance_cm": " 2 ",
+  "ground_site": "C7 spinous process",
+  "skin_preparation": "Previous cleaning of the surface with sprayed alcohol.",
+  "electrodes": "new at the start of the session",
+  "cue": "cue/cue-video.mp4",
+
+  "sinarm": {
+    "alpha_dc": 0.003,
+    "mains_hz": 60,
+    "harmonics": 7,
+    "q": 20,
+    "dc_init_samples": 200
+  },
+
+  "quality": {
+    "max_missing_pct": 1.0,
+    "length_tolerance_pct": 2.0,
+    "fs_tolerance_pct": 2.0
+  },
+
+  "windows": {
+    "length_ms": 100,
+    "skip_after_cue_s": 1.0
+  },
+
+  "azure_container": "recordings",
+
+  "folders": {
+    "train": "data/raw",
+    "test": "data/test_local",
+    "pilot": "data/pilot",
+    "simulated": "data/simulado",
+    "azure_download": "data/azure_descarga",
+    "outputs": "salidas"
+  }
+}

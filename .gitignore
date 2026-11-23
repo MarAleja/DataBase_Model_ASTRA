@@ -1,0 +1,19 @@
+# Secretos: nunca al repositorio
+.env
+*.key
+
+# Prueba (clase final): vive solo en Azure, como el expediente de un paciente
+data/test_local/
+data/azure_descarga/
+
+# Ensayos sin Arduino y salidas de Excel
+data/simulado/
+salidas/
+*_simulado.*
+
+# Python y sistema
+__pycache__/
+*.pyc
+.pytest_cache/
+.ipynb_checkpoints/
+.DS_Store
