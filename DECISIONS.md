@@ -37,6 +37,17 @@ We choose with the training sessions only, and we open the test sessions once, a
 Results (mean, worst session): write them here after running cell 6.
 **Reason.** *(AI draft)* A model only counts if it beats both floors on sessions it never saw. If the threshold is as good, we keep the threshold: one number is easy to explain and to run on the board.
 **Not understood yet.** COMPLETAR, in our own words.
+### Model Selection and Justification
+
+We selected a **Decision Tree classifier with a maximum depth of 3 and six input features (MAV, RMS, WL, ZC, MNF, and MDF)** to distinguish between rest (class 0) and neck extension (class 1).
+
+The model achieved a mean accuracy of **87.7%** using leave-one-session-out cross-validation, with a standard deviation of approximately 8.0 percentage points and a minimum session accuracy of 73.9%. Although its performance was similar to that of logistic regression (86.8% mean accuracy), the decision tree was selected because it provided slightly higher average accuracy and more interpretable classification rules.
+
+One important advantage of the decision tree is that its predictions can be explained through a small number of decision rules. Although six features were provided as inputs, the trained tree mainly used **Waveform Length (WL)** and **Median Frequency (MDF)** to distinguish between the two classes. This allows us to better understand which signal characteristics contribute to the classification.
+
+Additionally, limiting the tree to a maximum depth of three helps control model complexity and reduces the risk of overfitting. The model was evaluated by separating entire recording sessions rather than randomly splitting individual windows, providing a more realistic assessment of its performance with different electrode placements.
+
+Overall, the decision tree offered a good balance between classification accuracy, simplicity, and interpretability. However, its performance on the final unseen test sessions (S11–S14) still needs to be evaluated before confirming its generalization ability.
 
 ## 9. Route
 **Not decided yet.** Options:
