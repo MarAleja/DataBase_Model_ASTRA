@@ -10,8 +10,8 @@ We choose with the training sessions only, and we open the test sessions once, a
 
 | Pilot | Neutral (mV) | Up (mV) | Down (mV) | Up / neutral | Down / neutral |
 |---|---|---|---|---|---|
-| 1 | | | | | |
-| 2 | | | | | |
+| 1 | 15.96 | 15.78| 16.05 | 0.99 | 1.01 |
+| 2 | 4.37 | 4.69 | 3.71 | 1.07| 0.85 |
 | 3 | | | | | |
 
 **What it decides.** If "up" is not clearly above "neutral", the movement or the site must change before we record 100 trials. "Down" is recorded only here: it tells us if this muscle could also separate up from down later (project Atlas). Looking down also loads the neck extensors, so the two may look alike on this muscle.
