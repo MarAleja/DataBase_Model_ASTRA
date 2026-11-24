@@ -9,8 +9,8 @@ Project: tell "neck up" from "neutral neck" with one surface EMG channel on the 
 
 | Member code | GitHub user | In charge of | AI tool |
 |---|---|---|---|
-| M01 | @Aleja246 | COMPLETAR | COMPLETAR |
-| M02 | @saraipino | COMPLETAR | COMPLETAR |
+| M01 | @Aleja246 | Methodology (Data acquisition and Quality Report) | Claude |
+| M02 | @saraipino | Training of Model | Chatgpt |
 | M03 | COMPLETAR | COMPLETAR | COMPLETAR |
 | M04 | COMPLETAR | COMPLETAR | COMPLETAR |
 
