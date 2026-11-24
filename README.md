@@ -11,7 +11,7 @@ Project: tell "neck up" from "neutral neck" with one surface EMG channel on the 
 |---|---|---|---|
 | M01 | @Aleja246 | Methodology (Data acquisition and Quality Report) | Claude |
 | M02 | @saraipino | Train Model in Colab | Chatgpt |
-| M03 | a01646282-cmd | Recording sessions and electrode photos | Claude |
+| M03 | @a01646282-cmd | Recording sessions and electrode photos | Claude |
 | M04 | COMPLETAR | COMPLETAR | COMPLETAR |
 
 Every member has at least one commit. We measure one person. In the data that person has the code P01.
