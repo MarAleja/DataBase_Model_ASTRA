@@ -1,30 +1,30 @@
-# DataBase_sEMD_adq: neck up or neutral, from the left splenius capitis
+# DataBase_Model_ASTRA: neck up or neutral, from the left splenius capitis
 
 Course: M6 Machine Learning and IoT apps. Report 1, the data stage.
 Project: tell "neck up" from "neutral neck" with one surface EMG channel on the left splenius capitis of one person, on sessions with new electrodes that the model never saw. Goal: more than 75 % right.
 
-> **Status: protocol and code ready, 100 recordings made.**. `python code/check_quality.py` gives most of them.
+> **Status: 104 recordings acquired, 100 accepted and 4 rejected.** See `QUALITY-REPORT.md`.
 
 ## The team
 
 | Member code | GitHub user | In charge of | AI tool |
 |---|---|---|---|
-| M01 | @Aleja246 | Methodology (Data acquisition and Quality Report) | Claude |
+| M01 | @MarAleja | Experimental acquisition code design | Claude |
 | M02 | @saraipino | Train Model in Colab | Chatgpt |
-| M03 | 
-| M04 | @a01646282-cmd | Recording sessions and electrode photos | Claude |
+| M03 | @Rebecaleu | Coder | Codex |
+| M04 | @a01646282-cmd | Coder | Claude |
 
-Every member has at least one commit. We measure one person. In the data that person has the code P01.
+The professor (MahdiTec) has been added as a collaborator, as confirmed by the team. Individual commits and tags must be verified on GitHub. We measure one person. In the data that person has the code P01.
 
 ## The six parts
 
 ### 1. Data acquisition
-Plan: 100 training recordings, one trial each, 10 sessions, 1 person. Disposable Ag/AgCl surface Electrode, 92 cm apart, on the left splenius capitis. Arduino UNO R4 WiFi, 14 bits, 1000 samples per second, measured on the board with `micros()`.
+Plan: 100 training recordings, one trial each, 10 sessions, 1 person. Disposable Ag/AgCl surface Electrode, 2 cm apart, on the left splenius capitis. Arduino UNO R4 WiFi, 14 bits, 1000 samples per second, measured on the board with `micros()`.
 Result: 104 recordings, 104 trials, 10 sessions. 
 **Evidence:** `data/raw/`, `data/metadata.csv`, `cue/cue-video.mp4`.
 
 ### 2. Task
-Seated. Raise the head from mark A (eye level) to mark B and hold it. Two classes: neck up (movement) and neutral neck (rest).
+Seated. Raise the head from mark A (eye level) to mark B and hold it without external resistance. Two classes: neck up (movement) and neutral neck (rest).
 **Evidence:** `PROTOCOL.md`, sections 4 and 5. Photos in `figures/`.
 
 ### 3. Trial and cue timing
@@ -40,11 +40,11 @@ One trial per file, 15 s. Tones, because the person cannot see the screen with t
 
 ### 4. Sessions
 Plan: 10 training sessions on at least 2 days, 10 accepted recordings each. New electrodes, placed again from zero, at the start of every session.
-Result: sessions on 2 days.
+Result: all 10 training sessions were recorded on 19 November 2026 (one day).
 **Evidence:** the columns `session` and `date` of `data/metadata.csv`, one photo per session in `figures/`.
 
 ### 5. Cleaning
-Filters: DC removal (first order high-pass, 0.48 Hz) and seven notch filters at 60 Hz and its harmonics up to 420 Hz (Q = 20), the same chain as our Arduino sketch. Analog band-pass of the sensor: 40 to 450 Hz, so no digital band-pass. Type, order, limits and sources in `PROTOCOL.md`, section 9. The raw files are never changed.
+Filters: DC removal (first order high-pass, 0.48 Hz) and seven notch filters at 60 Hz and its harmonics up to 420 Hz (Q = 20), the same chain as our Arduino sketch. Analog Sallen-Key band-pass of the sensor: 40 to 450 Hz (12th-order high-pass and 12th-order low-pass, total order 24), so no digital band-pass. Type, order, limits and sources in `PROTOCOL.md`, section 9. The raw files are never changed.
 Rule, written before any score: reject a recording if a sample hits 0 or 16383, if more than 1 % of samples are missing, if its length or its sampling rate is more than 2 % off, or if the operator rejected it.
 Result: 4 of 104 rejected.
 **Evidence:** `QUALITY-REPORT.md`, `code/check_quality.py`.

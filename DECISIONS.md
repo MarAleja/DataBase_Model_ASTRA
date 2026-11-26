@@ -4,7 +4,7 @@ For each part: what we, or our AI tool, chose. The reason, in our own words. Wha
 We choose with the training sessions only, and we open the test sessions once, at the end.
 
 ## Pilot, before session S01
-`python code/grabar.py --piloto`, three times. SinArm RMS without the first second of each phase:
+`python code/grabar.py --piloto`, twice. SinArm RMS without the first second of each phase:
 
 | Pilot | Neutral (mV) | Up (mV) | Down (mV) | Up / neutral | Down / neutral |
 |---|---|---|---|---|---|
@@ -59,6 +59,8 @@ Additionally, limiting the tree to a maximum depth of three helps control model 
 
 Overall, the decision tree offered a good balance between classification accuracy, simplicity, and interpretability. However, its performance on the final unseen test sessions (S11–S14) still needs to be evaluated before confirming its generalization ability.
 
+**Not understood yet.** We have not established how well the selected tree generalizes to the final unseen electrode placements; this remains to be evaluated.
+
 ## 9. Route
 1. The model runs in Python on a laptop. Each record goes to Azure Blob Storage with its metadata.
   The Arduino UNO R4 WiFi acquires the EMG signal and sends the raw samples to a laptop through USB. Python processes the signal using the SinArm filtering pipeline, extracts the six features (MAV, RMS, WL, ZC, MNF, and MDF) and uses the trained Decision Tree classifier to predict rest (class 0) or neck extension (class 1). 
@@ -70,5 +72,5 @@ This option also makes it easier to inspect predictions, identify errors, and up
 
 **Not implemented yet**. The connection between the Python application and Azure Blob Storage still needs to be completed and tested.
 
-**Not understood yet.** How the ESP32 sends one record to Azure, and what one record must hold.
+**Not understood yet.** How to complete and validate the transfer of a record from the Python application to Azure Blob Storage.
 
