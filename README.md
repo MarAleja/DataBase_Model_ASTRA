@@ -11,7 +11,7 @@ Project: tell "neck up" from "neutral neck" with one surface EMG channel on the 
 |---|---|---|---|
 | M01 | @MarAleja | Experimental acquisition code design | Claude |
 | M02 | @saraipino | Train Model in Colab | Chatgpt |
-| M03 | @Rebecaleu | Coder | Codex |
+| M03 | @Rebecaleu | Coder | Gemini |
 | M04 | @a01646282-cmd | Coder | Claude |
 
 The professor (MahdiTec) has been added as a collaborator, as confirmed by the team. Individual commits and tags must be verified on GitHub. We measure one person. In the data that person has the code P01.
